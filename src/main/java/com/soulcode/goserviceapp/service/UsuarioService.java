@@ -37,6 +37,14 @@ public class UsuarioService {
         throw new UsuarioNaoEncontradoException();
     }
 
+    public Page<Usuario> nameFilter(String nameToFilter, Pageable page){
+        Page<Usuario> usuarios = usuarioRepository.nameFilter(nameToFilter, page);
+        if (!usuarios.isEmpty()){
+            return usuarios;
+        }
+        throw new UsuarioNaoEncontradoException();
+    }
+
     public List<Usuario> findAll(){
         return usuarioRepository.findAll();
     }

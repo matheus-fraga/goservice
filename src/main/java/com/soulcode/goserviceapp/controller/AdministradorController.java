@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -162,4 +163,22 @@ public class AdministradorController {
         }
         return mv;
     }
+
+    @GetMapping(value = "/filter")
+    public ModelAndView filter(@RequestParam(name = "buscaNome")String nameToFilter, @RequestParam(name = "page", defaultValue = "0") int page ) {
+        ModelAndView mv = new ModelAndView("usuariosAdmin");
+        int pageSize = 10;
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+        try {
+            Page<Usuario> usuarios = usuarioService.nameFilter(nameToFilter, pageable);
+            mv.addObject("usuarios", usuarios);
+        } catch (UsuarioNaoEncontradoException ex) {
+            mv.addObject("errorMessage", ex.getMessage());
+        } catch (Exception ex) {
+            mv.addObject("errorMessage", "Erro ao buscar usuário.");
+        }
+        return mv;
+    }
 }
+
