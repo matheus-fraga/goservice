@@ -44,11 +44,20 @@
                         </select>
                         <div class="form-text"></div>
                     </div>
-
                     <button type="submit" class="btn btn-primary">Salvar <i class="bi bi-save2 ms-2"></i></button>
                 </form>
             </div>
         </div>
+
+        <form method="get" th:action="@{/admin/filter}">
+            <div class="mt-5 mb-2">
+                <h4>Busque o usuário por nome</h4>
+
+                <input type="text" class="form-control" id="buscaNome" name="buscaNome" placeholder="Digite o nome do usuário" required = 'false'>
+                <div class="form-text"></div>
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </form>
 
         <div class="card w-100 mt-5">
             <div class="card-body">
@@ -79,31 +88,30 @@
                     </tr>
                     </tbody>
                 </table>
-
-               <div class="d-flex justify-content-center align-items-center mt-4">
-                   <nav class="text-center">
-                       <span class="page-link">Exibindo [[${usuarios.number * usuarios.size + 1}]] - [[${(usuarios.number + 1) * usuarios.size}]] de [[${usuarios.totalElements}]] usuários.</span>
-                       <ul class="pagination">
-
-                           <li class="page-item" th:classappend="${usuarios.hasPrevious()} ? '' : 'disabled'">
-                               <a class="page-link" th:href="@{/admin/usuarios(page=${usuarios.number - 1})}">Anterior</a>
-                           </li>
-
-                           <li th:each="pageNumber : ${#numbers.sequence(0, usuarios.totalPages - 1)}"
-                               th:classappend="${usuarios.number == pageNumber} ? 'active' : ''">
-                               <a class="page-link" th:href="@{/admin/usuarios(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
-                           </li>
-
-                           <li class="page-item" th:classappend="${usuarios.hasNext()} ? '' : 'disabled'">
-                               <a class="page-link" th:href="@{/admin/usuarios(page=${usuarios.number + 1})}">Próximo</a>
-                           </li>
-                       </ul>
-                   </nav>
-               </div>
-
             </div>
         </div>
     </main>
+
+    <div th:if="${not #lists.isEmpty(usuarios)}" class="d-flex justify-content-center align-items-center mt-4">
+        <nav class="text-center">
+            <span class="page-link"  >Exibindo [[${usuarios.number * usuarios.size + 1}]] - [[${(usuarios.number + 1) * usuarios.size}]] de [[${usuarios.totalElements}]] usuários.</span>
+            <ul class="pagination">
+
+                <li class="page-item" th:classappend="${usuarios.hasPrevious()} ? '' : 'disabled'">
+                    <a class="page-link" th:href="@{/admin/usuarios(page=${usuarios.number - 1})}">Anterior</a>
+                </li>
+
+                <li th:each="pageNumber : ${#numbers.sequence(0, usuarios.totalPages - 1)}"
+                    th:classappend="${usuarios.number == pageNumber} ? 'active' : ''">
+                    <a class="page-link" th:href="@{/admin/usuarios(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
+                </li>
+
+                <li class="page-item" th:classappend="${usuarios.hasNext()} ? '' : 'disabled'">
+                    <a class="page-link" th:href="@{/admin/usuarios(page=${usuarios.number + 1})}">Próximo</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
     <!--  MODAL DISABLE  -->
     <div th:each="usuario : ${usuarios}" th:if="${usuario.habilitado}">
