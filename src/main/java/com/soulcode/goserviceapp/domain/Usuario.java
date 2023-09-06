@@ -43,6 +43,10 @@ public class Usuario implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     private Endereco endereco;
 
+    @Column
+    private String urlFoto;
+
+
     public Usuario(Long id, String nome, String email, String senha, Perfil perfil, Boolean habilitado){
         this.id=id;
         this.nome=nome;
@@ -108,6 +112,15 @@ public class Usuario implements UserDetails {
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
+
+    public String getUrlFoto() {
+        return urlFoto;
+    }
+
+    public void setUrlFoto(String urlFoto) {
+        this.urlFoto = urlFoto;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
