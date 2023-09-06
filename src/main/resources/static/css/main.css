@@ -1,4 +1,25 @@
 
+*{
+box-sizing: block;
+margin:0;
+padding:0;
+}
+
+#logo{
+width:100px;
+z-index: 1;
+}
+
+
+#logoMarca{
+position: fixed;
+top: 10%;
+left: 0;
+width: 40%;
+text-align: center;
+font-size: 18px;
+}
+
 .card-publicity{
     background-color: #B0E0E6;
     width: 270px;
