@@ -58,6 +58,9 @@ public class Agendamento implements Serializable{
         this.hora = hora;
     }
 
+    public Agendamento(String number, String s, boolean b) {
+    }
+
     public Long getId() {
         return id;
     }
