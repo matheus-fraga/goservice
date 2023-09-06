@@ -35,13 +35,13 @@ public class Usuario implements UserDetails {
     @Column(nullable = false)
     private Perfil perfil;
 
-    @Column
-    private String urlFoto;
-
-
     public Usuario(){
         this.habilitado =true;
+        this.endereco = new Endereco();
     }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Endereco endereco;
 
     public Usuario(Long id, String nome, String email, String senha, Perfil perfil, Boolean habilitado){
         this.id=id;
@@ -50,6 +50,7 @@ public class Usuario implements UserDetails {
         this.senha=senha;
         this.perfil=perfil;
         this.habilitado=habilitado;
+        this.endereco=endereco;
     }
 
     public Long getId() {
@@ -100,14 +101,13 @@ public class Usuario implements UserDetails {
         this.perfil = perfil;
     }
 
-    public String getUrlFoto() {
-        return urlFoto;
+    public Endereco getEndereco() {
+        return endereco;
     }
 
-    public void setUrlFoto(String urlFoto) {
-        this.urlFoto = urlFoto;
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -161,7 +161,6 @@ public class Usuario implements UserDetails {
                 Objects.equals(nome, usuario.nome) &&
                 Objects.equals(email, usuario.email) &&
                 Objects.equals(senha, usuario.senha) &&
-                perfil == usuario.perfil &&
-                Objects.equals(urlFoto, usuario.urlFoto);
+                perfil == usuario.perfil;
     }
 }

@@ -1,13 +1,7 @@
 package com.soulcode.goserviceapp.controller;
 
-import com.soulcode.goserviceapp.domain.Agendamento;
-import com.soulcode.goserviceapp.domain.Cliente;
-import com.soulcode.goserviceapp.domain.Prestador;
-import com.soulcode.goserviceapp.domain.Servico;
-import com.soulcode.goserviceapp.service.AgendamentoService;
-import com.soulcode.goserviceapp.service.ClienteService;
-import com.soulcode.goserviceapp.service.PrestadorService;
-import com.soulcode.goserviceapp.service.ServicoService;
+import com.soulcode.goserviceapp.domain.*;
+import com.soulcode.goserviceapp.service.*;
 import com.soulcode.goserviceapp.service.exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -36,12 +30,16 @@ public class ClienteController {
     @Autowired
     private AgendamentoService agendamentoService;
 
+    @Autowired
+    private EnderecoService enderecoService;
+
     @GetMapping(value = "/dados")
     public ModelAndView dados(Authentication authentication, @ModelAttribute("usuario") Cliente usuario) {
         ModelAndView mv = new ModelAndView("dadosCliente");
         try {
             Cliente cliente = clienteService.findAuthenticated(authentication);
             mv.addObject("cliente", cliente);
+            mv.addObject("endereco", cliente.getEndereco());
         } catch (UsuarioNaoAutenticadoException | UsuarioNaoEncontradoException ex) {
             mv.addObject("errorMessage", ex.getMessage());
         } catch (Exception ex) {
@@ -69,6 +67,19 @@ public class ClienteController {
         return "redirect:/cliente/dados";
     }
 
+    @PostMapping(value = "/dados/endereco")
+    public String alterarEndereco(Endereco endereco, RedirectAttributes attributes) {
+        try {
+            enderecoService.update(endereco);
+            attributes.addFlashAttribute("successMessage", "Dados alterados.");
+        } catch (UsuarioNaoEncontradoException ex) {
+            attributes.addFlashAttribute("errorMessage", ex.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            attributes.addFlashAttribute("errorMessage", "Erro ao alterar dados cadastrais.");
+        }
+        return "redirect:/cliente/dados";
+    }
     @GetMapping(value = "/agendar")
     public ModelAndView agendar(@RequestParam(name = "especialidade", required = false) Long servicoId) {
         ModelAndView mv = new ModelAndView("agendarServico");

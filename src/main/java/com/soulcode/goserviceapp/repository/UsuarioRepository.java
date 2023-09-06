@@ -25,4 +25,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Modifying
     @Query(value = "UPDATE usuarios u SET u.habilitado = ? WHERE u.id = ?", nativeQuery = true)
     void updateEnableById(boolean habilitado, Long id);
+
+    @Query(value = "SELECT * FROM usuarios WHERE nome LIKE %?%", nativeQuery = true)
+    Page<Usuario> nameFilter(String name, Pageable pageable);
+
 }
