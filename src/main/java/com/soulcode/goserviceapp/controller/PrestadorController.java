@@ -54,8 +54,9 @@ public class PrestadorController {
 
 
     @PostMapping(value = "/dados")
-    public String editarDados(Prestador prestador, RedirectAttributes attributes) {
+    public String editarDados(Prestador prestador, @RequestParam("urlFoto") String urlFoto, RedirectAttributes attributes) {
         try {
+            prestador.setUrlFoto(urlFoto); // Define a URL da imagem no prestador
             prestadorService.update(prestador);
             attributes.addFlashAttribute("successMessage", "Dados alterados.");
         } catch (UsuarioNaoEncontradoException ex) {

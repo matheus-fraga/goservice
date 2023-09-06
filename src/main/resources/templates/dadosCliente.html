@@ -18,7 +18,7 @@
                 <div th:if="${successMessage != null}" th:text="${successMessage}" class="alert alert-success" role="alert"></div>
                 <div th:if="${errorMessage != null}" th:text="${errorMessage}" class="alert alert-danger" role="alert"></div>
 
-                <form method="post" th:action="@{/cliente/dados}">
+                <form method="post" th:action="@{/cliente/dados}" enctype="multipart/form-data">
                     <input type="hidden" name="id" th:field="*{cliente.id}">
                     <div class="mb-3">
                         <label for="nome" class="form-label">Nome<span class="text-danger">*</span></label>
@@ -43,6 +43,29 @@
                     <div class="mb-3">
                         <label for="dataNascimento" class="form-label">Data de Nascimento</label>
                         <input type="date" class="form-control" id="dataNascimento" name="dataNascimento" th:value="${cliente.dataNascimento}">
+                        <div class="form-text"></div>
+                    </div>
+
+
+
+                    <input type="hidden" name="urlFoto" id="urlFoto" th:value="${cliente.urlFoto}" />
+
+
+                    <div class="mb-3">
+                        <label for="urlFoto" class="form-label">Foto de Perfil</label>
+                        <div class="imageUpload">
+                            <input type="file" class="inp" id="urlFotoInput" name="urlFotoInput" onchange="getImageData(event)" />
+                            <button type="button" onclick="selectImage()" class="selectImage" style="display: none;">Selecionar Imagens</button>
+
+                            <div class="metaData" style="display: none;"></div>
+                            <div class="progressBar" style="display: none;">
+                                <div class="progress"></div>
+                            </div>
+                            <button type="button" onclick="uploadImage()" class="upload btn btn-light">Enviar</button>
+                            <span class="completeMsg" style="display: none;"></span>
+                            <span class="loading" style="display: none;">Carregando...</span>
+                            <div class="images"></div>
+                        </div>
                         <div class="form-text"></div>
                     </div>
 
