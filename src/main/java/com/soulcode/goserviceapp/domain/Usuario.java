@@ -37,7 +37,11 @@ public class Usuario implements UserDetails {
 
     public Usuario(){
         this.habilitado =true;
+        this.endereco = new Endereco();
     }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Endereco endereco;
 
     public Usuario(Long id, String nome, String email, String senha, Perfil perfil, Boolean habilitado){
         this.id=id;
@@ -46,6 +50,7 @@ public class Usuario implements UserDetails {
         this.senha=senha;
         this.perfil=perfil;
         this.habilitado=habilitado;
+        this.endereco=endereco;
     }
 
     public Long getId() {
@@ -94,6 +99,14 @@ public class Usuario implements UserDetails {
 
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
     @Override
