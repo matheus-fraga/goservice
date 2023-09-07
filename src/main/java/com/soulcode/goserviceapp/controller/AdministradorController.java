@@ -3,6 +3,7 @@ package com.soulcode.goserviceapp.controller;
 import com.soulcode.goserviceapp.domain.Servico;
 import com.soulcode.goserviceapp.domain.Usuario;
 import com.soulcode.goserviceapp.domain.UsuarioLog;
+import com.soulcode.goserviceapp.repository.ServicoRepository;
 import com.soulcode.goserviceapp.service.ServicoService;
 import com.soulcode.goserviceapp.service.UsuarioLogService;
 import com.soulcode.goserviceapp.service.UsuarioService;
@@ -10,6 +11,7 @@ import com.soulcode.goserviceapp.service.exceptions.ServicoNaoEncontradoExceptio
 import com.soulcode.goserviceapp.service.exceptions.UsuarioNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -33,6 +35,10 @@ public class AdministradorController {
 
     @Autowired
     private UsuarioLogService usuarioLogService;
+
+    @Autowired
+    private ServicoRepository servicoRepository;
+
 
     @GetMapping(value = "/servicos")
     public ModelAndView servicos(@RequestParam(name = "page", defaultValue = "0") int page) {
@@ -165,7 +171,7 @@ public class AdministradorController {
     }
 
     @GetMapping(value = "/filter")
-    public ModelAndView filter(@RequestParam(name = "buscaNome")String nameToFilter, @RequestParam(name = "page", defaultValue = "0") int page ) {
+    public ModelAndView filter(@RequestParam(name = "buscaNome") String nameToFilter, @RequestParam(name = "page", defaultValue = "0") int page) {
         ModelAndView mv = new ModelAndView("usuariosAdmin");
         int pageSize = 10;
 
@@ -179,6 +185,13 @@ public class AdministradorController {
             mv.addObject("errorMessage", "Erro ao buscar usuário.");
         }
         return mv;
+    }
+
+    @GetMapping("/filtro")
+    public String filtroPorNome(@RequestParam("nome") String nome, Model model) {
+        List<Servico> servicos = servicoRepository.buscarPorNome(nome);
+        model.addAttribute("servicos", servicos);
+        return "/servicosAdmin";
     }
 }
 

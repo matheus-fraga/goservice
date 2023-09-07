@@ -128,6 +128,29 @@
         </div>
     </div>
 </div>
-
+<div>
+    <h5>Filtrar Serviços</h5>
+</div>
+<div>
+    <form action="/admin/servicos/filtro" method="GET">
+        <input type="text" name="nome" placeholder="Digite o nome do serviço">
+        <button type="submit">Filtrar</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Descrição</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="servico : ${servicos}">
+            <td th:text="${servico.nome}"></td>
+            <td th:text="${servico.descricao}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</div>
 </body>
 </html>
