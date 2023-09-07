@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 @Service
-public class EnderecoService  {
+public class EnderecoService {
     @Autowired
     private EnderecoRepository enderecoRepository;
 
-    public Endereco findById(Long id){
+    public Endereco findById(Long id) {
         Optional<Endereco> endereco = enderecoRepository.findById(id);
-        if(endereco.isPresent()){
+        if (endereco.isPresent()) {
             return endereco.get();
         } else {
             throw new UsuarioNaoEncontradoException();
@@ -28,6 +28,10 @@ public class EnderecoService  {
         updatedEndereco.setNumero(endereco.getNumero());
         updatedEndereco.setUf(endereco.getUf());
         return enderecoRepository.save(updatedEndereco);
-        }
     }
+
+    public void alterarEnderecoPorIdOuEmail(Long id, String email, Endereco novoEndereco) {
+        enderecoRepository.alterarEnderecoPorIdOuEmail(id, email, novoEndereco);
+    }
+}
 
